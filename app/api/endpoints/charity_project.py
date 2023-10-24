@@ -8,6 +8,7 @@ from app.api.controllers import (
     chek_validate_update_project,
     remove_and_check_validation_project
 )
+from app.api.validators import get_project_or_404
 from app.schemas.charity_project import (
     CharityProjectDB,
     CharityProjectUpdate,
@@ -66,10 +67,13 @@ async def update_project(
     """
     Обновление информации о проекте благотворительности
     """
-    project = await chek_validate_update_project(
-        project_id, obj_in, session
+    project = await get_project_or_404(
+        project_id, session
     )
-    return project
+
+    return await chek_validate_update_project(
+        project, obj_in, session
+     )
 
 
 @router.delete(

@@ -3,6 +3,7 @@ from http import HTTPStatus
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.constants import ZERO_INVESTMENT
 from app.crud.charity_project import charity_project_crud
 from app.models import CharityProject
 
@@ -25,7 +26,7 @@ async def check_name_duplicate(
         )
 
 
-async def check_project_exists_and_return(
+async def get_project_or_404(
         project_id: int,
         session: AsyncSession,
 ) -> CharityProject:
@@ -65,7 +66,7 @@ def check_invested_amount_is_null(project) -> None:
     """
     Проверяет, что сумма внесенных средств в проект равна нулю.
     """
-    if project.invested_amount != 0:
+    if project.invested_amount > ZERO_INVESTMENT:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
             detail='В проект были внесены средства, не подлежит удалению!'

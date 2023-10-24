@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.validators import (
     check_name_duplicate,
-    check_project_exists_and_return,
+    get_project_or_404,
     check_update_fully_invested,
     check_update_project,
     check_invested_amount_is_null,
@@ -41,7 +41,7 @@ async def create_project(
 
 
 async def chek_validate_update_project(
-    project_id: int,
+    project,
     obj_in: CharityProjectUpdate,
     session: AsyncSession = Depends(get_async_session),
 ):
@@ -49,9 +49,7 @@ async def chek_validate_update_project(
     Проверка благотворительного проекта на инсветирование.
     Обновление информации о проекте благотворительности.
     """
-    project = await check_project_exists_and_return(
-        project_id, session
-    )
+
     check_update_fully_invested(project)
     if obj_in.full_amount is not None:
         project = check_update_project(
@@ -74,7 +72,7 @@ async def remove_and_check_validation_project(
     Проверка проекта на валидность для удаления,
     и его удаление.
     """
-    project = await check_project_exists_and_return(project_id, session)
+    project = await get_project_or_404(project_id, session)
     check_invested_amount_is_null(project)
     check_fully_invested(project)
     project = await charity_project_crud.remove(project, session)

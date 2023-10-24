@@ -8,7 +8,6 @@ from app.core.db import Base
 async def entry_to_db(object: Base, session: AsyncSession) -> Base:
     await session.commit()
     await session.refresh(object)
-    return object
 
 
 def close_object(object: Base) -> None:
