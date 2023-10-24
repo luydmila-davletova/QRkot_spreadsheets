@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.controllers import (
     create_project,
-    chek_validate_update_project,
+    update_project_end_return,
     remove_and_check_validation_project
 )
 from app.api.validators import get_project_or_404
@@ -65,15 +65,14 @@ async def update_project(
         session: AsyncSession = Depends(get_async_session),
 ):
     """
-    Обновление информации о проекте благотворительности
+    Обновление информации о проекте благотворительности.
     """
     project = await get_project_or_404(
         project_id, session
     )
-
-    return await chek_validate_update_project(
+    return await update_project_end_return(
         project, obj_in, session
-     )
+    )
 
 
 @router.delete(

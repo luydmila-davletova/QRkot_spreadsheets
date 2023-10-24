@@ -40,7 +40,7 @@ async def create_project(
     return project
 
 
-async def chek_validate_update_project(
+async def update_project_end_return(
     project,
     obj_in: CharityProjectUpdate,
     session: AsyncSession = Depends(get_async_session),
@@ -49,7 +49,6 @@ async def chek_validate_update_project(
     Проверка благотворительного проекта на инсветирование.
     Обновление информации о проекте благотворительности.
     """
-
     check_update_fully_invested(project)
     if obj_in.full_amount is not None:
         project = check_update_project(
