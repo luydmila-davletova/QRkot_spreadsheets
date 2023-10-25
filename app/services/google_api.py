@@ -2,7 +2,7 @@ from datetime import datetime as dt
 
 from aiogoogle import Aiogoogle
 
-from app.constants import SHEETS_BODY, FORMAT
+from app.constants import SHEETS_BODY, DATE_FORMAT_FOR_SHEETS
 from app.core.config import settings
 
 
@@ -12,7 +12,7 @@ async def spreadsheets_create(
     """
     Функция создания документа с таблицами.
     """
-    SHEETS_BODY['properties']['title'] = 'Отчет на {}'.format(dt.now().strftime(FORMAT))
+    SHEETS_BODY['properties']['title'] = 'Отчет на {}'.format(dt.now().strftime(DATE_FORMAT_FOR_SHEETS))
     service = await wrapper_services.discover('sheets', 'v4')
     response = await wrapper_services.as_service_account(
         service.spreadsheets.create(json=SHEETS_BODY))
@@ -48,7 +48,7 @@ async def spreadsheets_update_value(spreadsheet_id: str,
     """
     Функция обновления данных в гугл-таблице.
     """
-    now_date_time = dt.now().strftime(FORMAT)
+    now_date_time = dt.now().strftime(DATE_FORMAT_FOR_SHEETS)
     service = await wrapper_services.discover('sheets', 'v4')
     table_values = [
         ['Отчет от', now_date_time],

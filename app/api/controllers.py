@@ -3,7 +3,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.validators import (
     check_name_duplicate,
-    get_project_or_404,
     check_update_fully_invested,
     check_update_project,
     check_invested_amount_is_null,
@@ -63,15 +62,15 @@ async def update_project_end_return(
     return project
 
 
-async def remove_and_check_validation_project(
-        project_id: int,
+async def remove_and_return_project(
+        project,
         session: AsyncSession = Depends(get_async_session),
 ):
     """
     Проверка проекта на валидность для удаления,
     и его удаление.
     """
-    project = await get_project_or_404(project_id, session)
+
     check_invested_amount_is_null(project)
     check_fully_invested(project)
     project = await charity_project_crud.remove(project, session)

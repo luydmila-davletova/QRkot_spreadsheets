@@ -7,7 +7,7 @@ DEFAULT_DB_URL = 'sqlite+aiosqlite:///./QRKot.db'
 DEFAULT_TITLE = 'Сервис QRKot'
 DEFAULT_SECRET = 'SECRET'
 
-FORMAT = "%Y/%m/%d %H:%M:%S"
+DATE_FORMAT_FOR_SHEETS = "%Y/%m/%d %H:%M:%S"
 
 SHEETS_BODY = {
     'properties': {'title': '', 'locale': 'ru_RU'},

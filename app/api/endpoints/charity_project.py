@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.controllers import (
     create_project,
     update_project_end_return,
-    remove_and_check_validation_project
+    remove_and_return_project
 )
 from app.api.validators import get_project_or_404
 from app.schemas.charity_project import (
@@ -87,7 +87,9 @@ async def remove_project(
     """
     Удаление проекта благотворительности
     """
-    project = await remove_and_check_validation_project(
+    project = await get_project_or_404(
         project_id, session
     )
-    return project
+    return await remove_and_return_project(
+        project, session
+    )
